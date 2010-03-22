@@ -1,0 +1,12 @@
+{% extends "main.tmpl" %}
+{% block question %}
+<p>{{ dialog }}</p>
+<p id="question">{{ question }}</p>
+{% endblock %}
+{% block choices %}
+<div id="choices">
+{% for choice in choices %}
+  <button class="choice" ques={{ choice.word }}>{{ choice.defn }}</button>
+{% endfor %}
+</div>
+{% endblock %}

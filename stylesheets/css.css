@@ -1,0 +1,28 @@
+html, body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, a {margin: 0; padding: 0; border: 0}
+h1, h2, h3, h4, h5, h6 { font-weight:normal;font-size:100%}
+
+body          {background: bisque}
+h1            {font-family: helvetica; float:left;
+               font-size: 3em; padding-top: 15px; color: tan}
+#menu         {float: right; margin: 4px; background: cornsilk;
+               border: 1px lightgray solid; color: lightgray; padding: 6px}
+#menu a       {color: tan; text-decoration: none; font: small-caps 1em mono;
+               padding: 7px}
+#menu a:hover {color: saddlebrown}
+#main         {background: cornsilk; padding-top: 30;
+               height: 70%; border: solid 1px lightgray;}
+#header       {padding-top: 1px; height: 80}
+#footer       {padding: 1px; width: 500px; margin: auto;
+               text-align: center; font: 8pt sans;
+               color: lightsteelblue; padding: 10px}
+#dialog       {background: #fff; width: 500px; padding: 3px;
+               margin-left: auto; margin-right: auto;
+               border: solid 1px lightgray; font-family: sans}
+#question     {font-size: 1.5em; text-align: center;
+               background: burlywood; padding: 8px;}
+.choice       {background: linen; padding: 4px; width: 100%;
+               text-align: left; border-style: none; margin-top: 3px}
+.choice:hover {background: oldlace}
+.choice:active {background: moccasin}
+.correct {background: honeydew}
+.wrong {background: mistyrose}
