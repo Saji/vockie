@@ -1,15 +1,19 @@
 <html>
  <head>
-  <link rel="stylesheet" type="text/css" href="/stylesheets/css.css" />
+  <link id="css" rel="stylesheet" type="text/css" href="/stylesheets/css.css" />
  </head>
  <body>
   <div id="header">
-   <h1>.:Vockie:.</h1>
+   <div id="title"><h1>.:Vockie:.</h1></div>
    <div id="menu">
-   <a href="example.com">Login</a>
-   <a href="example.com">Settings</a>
+   <a href="{{ loginurl }}">{{ logoption }}</a>
+   <a class="settings" href="">Settings</a>
    </div>
   </div>
+  <div id='settings'>
+    <p>Settings.</p>
+  </div>
+  <p id="name">Hi {{ name }}!</p>
   <div id="main">
    <div id="dialog">
 

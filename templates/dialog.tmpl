@@ -1,12 +1,13 @@
-{% extends "main.tmpl" %}
+{% extends mode %}
 {% block question %}
-<p>{{ dialog }}</p>
-<p id="question">{{ question }}</p>
+<p id="question">{{ question }}<img id="loading" src="images/loading_16.gif"/></p>
 {% endblock %}
 {% block choices %}
 <div id="choices">
 {% for choice in choices %}
   <button class="choice" ques={{ choice.word }}>{{ choice.defn }}</button>
 {% endfor %}
+<div class='unknowndialog'><p class='error'>Error. (Unknown user).</p><button class='error'>Refresh?</button></div>
+<div class='offsyncdialog'><p class='error'>Error. (Off sync).</p><button class='error'>Refresh?</button></div>
 </div>
 {% endblock %}
