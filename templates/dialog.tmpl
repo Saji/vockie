@@ -1,13 +1,62 @@
 {% extends mode %}
+
+{% block style %}
+<style type="text/css">
+  html, body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, a {margin: 0; padding: 0; border: 0} 
+  h1, h2, h3, h4, h5, h6 { font-weight:normal;font-size:100%}                                             
+                                                                                                          
+  body           {background: {{ colors.0 }}}                                                                     
+  #title         {font-family: helvetica; float:left;                                                     
+                  padding-top: 15px; color: {{ colors.3 }}; font-size: 3em}                                          
+  #name          {margin: 10; float: left; font-size: .9em;                                               
+                  color: {{ colors.1 }}}                                                                     
+  #settings      {display: none}                                                                          
+  #loading       {float: right; display: none}                                                            
+  #menu          {float: right; margin: 4px; background: {{ colors.2 }};                                        
+                  border: 1px {{ colors.3 }} solid; color: lightgray; padding: 6px}                                  
+  #menu a        {color: {{ colors.3 }}; text-decoration: none; font: small-caps 1em mono;                           
+                  padding: 7px}                                                                           
+  #menu a:hover  {color: {{ colors.1 }}}                                                                     
+  #main          {background: {{ colors.2 }}; padding-top: 30;                                                  
+                  height: 70%; border: solid 1px lightgray;}                                              
+  #header        {padding-top: 1px; height: 80}                                                           
+  #footer        {padding: 1px; width: 500px; margin: auto;                                               
+                  text-align: center; font: 8pt sans;                                                     
+                  color: lightgray; padding: 10px}                                                        
+  #dialog        {background: #fff; width: 500px; padding: 3px;                                           
+                  margin-left: auto; margin-right: auto;                                                  
+                  border: solid 1px lightgray; font-family: sans}                                         
+  #question      {font-size: 1.5em; text-align: center;                                                   
+                  background: {{ colors.3 }}; padding: 8px;}                                                         
+  .choice        {background: {{ colors.4 }}; padding: 4px; width: 100%;                                           
+                  text-align: left; border-style: none; margin-top: 3px}                                  
+  .choice:hover  {background: {{ colors.2 }}}                                                                   
+  .choice:active {background: {{ colors.0 }}}                                                                     
+  .correct       {background: honeydew}                                                                   
+  .wrong         {background: mistyrose}                                                                  
+  .unknowndialog, .offsyncdialog {display: none}                                                          
+  p.error        {background: {{ colors.0 }}; margin-top: 3px; border: 1px solid {{ colors.1 }};                     
+                  padding: 4px; text-align: center}
+   button.error   {width: 100%; margin-top: 3px}
+</style>
+{% endblock %}
+
 {% block question %}
 <p id="question">{{ question }}<img id="loading" src="images/loading_16.gif"/></p>
 {% endblock %}
+
 {% block choices %}
 <div id="choices">
 {% for choice in choices %}
   <button class="choice" ques={{ choice.word }}>{{ choice.defn }}</button>
 {% endfor %}
-<div class='unknowndialog'><p class='error'>Error. (Unknown user).</p><button class='error'>Refresh?</button></div>
-<div class='offsyncdialog'><p class='error'>Error. (Off sync).</p><button class='error'>Refresh?</button></div>
+<div class='unknowndialog'>
+  <p class='error'>Error. (Unknown user).</p>
+  <button class='error'>Refresh?</button>
+</div>
+<div class='offsyncdialog'>
+  <p class='error'>Error. (Off sync).</p>
+  <button class='error'>Refresh?</button>
+</div>
 </div>
 {% endblock %}

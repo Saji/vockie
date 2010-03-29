@@ -12,17 +12,21 @@ dic = simplejson.loads(dicfile)
 templatepath = os.path.join(os.path.dirname(__file__), 'templates/dialog.tmpl')
 maintemplate = 'main.tmpl'
 ajxtemplate = 'dialogwrapper.tmpl'
+ajxcsstemplate = 'ajxcss.tmpl'
 scoreincorrect = 10
 scorecorrect = -5
 maxscore = 100
-choices = 6
-
-def cumulate(dic = dic):
+choices = 7
+colors = [ 'bisque',
+           'saddlebrown',
+           'cornsilk',
+           'tan',
+           'linen' ]
+def cumulate(dic):
     dic[0][1] = 0
     for i, x in enumerate(dic):
         if i != 0:
             dic[i][1] = dic[i][0] + dic[i-1][1]
-
 def getuser(ident):
     query = MyUser.all()
     return query.filter('ident =', ident).get()
@@ -58,7 +62,8 @@ def serve(handler, currentuser):
     a = [currentuser.getrandom() for x in range(choices - 1)]
     a.insert(0, currentuser.getranked())
     templatedata = {'question': a[0][2],
-              'choices': [{'word': x[2], 'defn': x[3]} for x in a]}
+                    'choices': [{'word': x[2], 'defn': x[3]} for x in a],
+                    'colors': colors}
     if handler.request.is_xhr:
         templatedata['mode'] = ajxtemplate
     else:
@@ -75,24 +80,17 @@ def serve(handler, currentuser):
 def deletestraycookie(handler):
     if not googleuser() and isgooglecookie(handler):
         deletecookie(handler)
-cumulate()
 
-################# REWRITE THIS ##########################
+cumulate(dic)
+
 class JSONProperty(db.Property):
-    # data_type = db.Text
-    # def __init__(self, *args, **kwds):
-    #     self._require_parameter(kwds, 'indexed', False)
-    #     kwds['indexed'] = True
-    #     super(JSONProperty, self).__init__(*args, **kwds)
+    data_type = db.Text
     def get_value_for_datastore(self, model_instance):
         value = super(JSONProperty, self).get_value_for_datastore(
             model_instance)
-        if value is not None:
-            value = simplejson.dumps(value)
-            return db.Text(value)
+        return db.Text( simplejson.dumps(value) )
     def make_value_from_datastore(self, value):
-        if value is not None:
-            return simplejson.loads(value)
+        return simplejson.loads(value)
 
 class MyUser(db.Model):
     ident = db.StringProperty()
@@ -165,8 +163,10 @@ class AJX(webapp.RequestHandler):
                 user.updatescore(question, scorecorrect)
             else:
                 user.updatescore(question, scoreincorrect)
-        serve(self, user)                                  
-#        self.response.out.write(user.lastattempt)
+        serve(self, user)
+    def get(self):
+        templatedata = {'mode': ajxcsstemplate, 'colors': colors}
+        self.response.out.write(template.render(templatepath, templatedata))
 
 def main():
     application = webapp.WSGIApplication( [('/', MainPage), ('/ajx', AJX)],
