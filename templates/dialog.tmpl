@@ -10,7 +10,7 @@
                   padding-top: 15px; color: {{ colors.3 }}; font-size: 3em}                                          
   #name          {margin: 10; float: left; font-size: .9em;                                               
                   color: {{ colors.1 }}}                                                                     
-  #settings      {display: none; width: 50%; margin: auto}
+  #settings      {display: none; width: 60%; margin: auto; overflow: auto}
   #loading       {float: right; display: none}                                                            
   #menu          {float: right; margin: 4px; background: {{ colors.2 }};                                        
                   border: 1px {{ colors.3 }} solid; color: lightgray; padding: 6px}                                  
@@ -32,13 +32,13 @@
                   text-align: left; border-style: none; margin-top: 3px}                                  
   .choice:hover  {background: {{ colors.2 }}}                                                                   
   .choice:active {background: {{ colors.0 }}}                                                                     
-  .correct       {background: honeydew}                                                                   
+  .correct       {background: lightgreen}                                                                   
   .wrong         {background: mistyrose}                                                                  
   .unknowndialog, .offsyncdialog {display: none}                                                          
   p.error        {background: {{ colors.0 }}; margin-top: 3px; border: 1px solid {{ colors.1 }};                     
                   padding: 4px; text-align: center}
    button.error   {width: 100%; margin-top: 3px}
-   .colors        {margin: 3px; border: 1px solid}
+   .colors        {margin: 3px; border: 1px solid; padding: 0px}
 </style>
 {% endblock %}
 

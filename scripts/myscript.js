@@ -38,26 +38,24 @@ $(function() {
     e.preventDefault();
     $("#settings").slideToggle(); //offset requires element visibility
     var colorloversurl = "http://www.colourlovers.com/api/palettes/top?jsonCallback=?";
-    $.getJSON(colorloversurl, {numResults: 20}, function(colors) {
+    $.getJSON(colorloversurl, {numResults: 99}, function(colors) {
       var c , html;
       $("#settings").empty();
       $.each(colors, function(k, v) {
         html = [];
         c = v.colors;
-        html.push("<span id='colors" + k + "' class='colors'>");
+        html.push("<button id='" + k + "' class='colors'>");
         $.each(c, function(l, w) {
           html.push("<span class='color" + l + "' style='background:#" + w + "'>.</span>")
         });
-        html.push("</span>");
+        html.push("</button>");
         $("#settings").append(html.join(""));
       });
       $(".colors").click(function(color) {
-        color = $.map(colors[this.id[this.id.length - 1]]["colors"], function(v) {
+        color = $.map(colors[this.id]["colors"], function(v) {
           return "\"#" + v + "\"";
         });
-        console.log(color);
         $.post(xhrsubpath,{iscolorset: 'true', colors: "[" + color.toString() + "]"},function(got) {
-          console.log(got);
           $("style").replaceWith(got);
         });
       });
