@@ -32,9 +32,9 @@ def getuser(ident):
     return query.filter('ident =', ident).get()
 def createuser(user):
     if isinstance(user, str):
-        user = MyUser(ident=randstr(), name=user, dic=dic);
+        user = MyUser(ident=randstr(), name=user, dic=dic, colors=colors);
     else:
-        user = MyUser(ident=user.user_id(), name=user.nickname(), dic=dic)
+        user = MyUser(ident=user.user_id(), name=user.nickname(), dic=dic, colors=colors)
     user.put()
     return user
 def isgooglecookie(handler):
@@ -63,7 +63,7 @@ def serve(handler, currentuser):
     a.insert(0, currentuser.getranked())
     templatedata = {'question': a[0][2],
                     'choices': [{'word': x[2], 'defn': x[3]} for x in a],
-                    'colors': colors}
+                    'colors': currentuser.colors}
     if handler.request.is_xhr:
         templatedata['mode'] = ajxtemplate
     else:
@@ -97,6 +97,7 @@ class MyUser(db.Model):
     name = db.StringProperty()
     dic = JSONProperty()
     lastattempt = JSONProperty()
+    colors = JSONProperty()
     def getranked(self):
         n = randint(0, self.dic[-1][1])
         def closer(a, b, n):
@@ -148,12 +149,20 @@ class AJX(webapp.RequestHandler):
         user = None
         question = getpostvar(self, 'ques')
         iscorrect = getpostvar(self, 'iscorrect')
+        iscolorset = getpostvar(self, 'iscolorset')
         if googleuser():
             user = getuser(googleuser().user_id())
         elif cookieuser(self):
             user = cookieuser(self)
         else:
             self.response.out.write('unknown user')
+            return
+        if iscolorset == 'true':
+            colors = simplejson.loads(getpostvar(self, 'colors'))
+            user.colors = colors
+            user.put()
+            templatedata = {'mode': ajxcsstemplate, 'colors': colors}
+            self.response.out.write(template.render(templatepath, templatedata))
             return
         if not question == user.lastattempt[2]:
             self.response.out.write('off sync')
@@ -164,9 +173,6 @@ class AJX(webapp.RequestHandler):
             else:
                 user.updatescore(question, scoreincorrect)
         serve(self, user)
-    def get(self):
-        templatedata = {'mode': ajxcsstemplate, 'colors': colors}
-        self.response.out.write(template.render(templatepath, templatedata))
 
 def main():
     application = webapp.WSGIApplication( [('/', MainPage), ('/ajx', AJX)],
