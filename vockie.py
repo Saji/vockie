@@ -77,7 +77,7 @@ def serve(handler, currentuser):
     templatedata['name'] = currentuser.name
     shuffle(templatedata['choices'])
     handler.response.out.write(template.render(templatepath, templatedata))
-def deletestraycookie(handler):
+def catchstraycookie(handler):
     if not googleuser() and isgooglecookie(handler):
         deletecookie(handler)
 
@@ -130,7 +130,7 @@ class MyUser(db.Model):
 class MainPage(webapp.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/html'
-        deletestraycookie(self)
+        catchstraycookie(self)
         user = None
         if googleuser():
             if not getuser(googleuser().user_id()):
@@ -145,7 +145,7 @@ class MainPage(webapp.RequestHandler):
 
 class AJX(webapp.RequestHandler):
     def post(self):
-        deletestraycookie(self)
+        catchstraycookie(self)
         user = None
         question = getpostvar(self, 'ques')
         iscorrect = getpostvar(self, 'iscorrect')
