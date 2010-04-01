@@ -56,6 +56,7 @@ def cookieuser(handler):
 def googleuser():
     return users.get_current_user()
 def randstr():
+    ## By Bartosz Ptaszynski http://code.activestate.com/recipes/59873-random-password-generation/
     return ''.join(Random().sample(string.letters+string.digits, 12))
 def serve(handler, currentuser):
     handler.response.headers['Set-Cookie'] = currentuser.ident
